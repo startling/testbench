@@ -21,7 +21,7 @@ class Benchmark(object):
     #TODO: keyword arguments
 
     # the amount of times to run each method with each argument set
-    repetitions = 2
+    repetitions = 100
 
     @classmethod
     def _trial(cls, method, args):
