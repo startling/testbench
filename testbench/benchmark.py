@@ -5,6 +5,7 @@ import time
 
 
 def benchmark(fn):
+    "A decorator that sets the `benchmark_this` flag on a function."
     fn._benchmark_this = True
     return fn
 
