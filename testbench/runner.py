@@ -30,13 +30,14 @@ class BenchmarkRunner(object):
             print "=" * 80
             print "Benchmarking %s..." % benchmark.__name__
             print "=" * 80
-            for argset, arg_results in results:
+            argsets = benchmark.arguments
+            for argset in argsets:
                 print "For the argument set " + str(argset)
                 print "-" * 80
-                for method, method_results in arg_results:
-                    print "%s:" % method.__name__,
+                for r in (r for r in results if r.args == argset):
+                    print "%s:" % r.method.__name__,
                     print "avg:",
-                    print "%f" % (sum(method_results) / len(method_results)),
-                    print "max: %f" % max(method_results),
-                    print "min: %f" % min(method_results)
+                    print "%f" % (sum(r.results) / len(r.results)),
+                    print "max: %f" % max(r.results),
+                    print "min: %f" % min(r.results)
                 print "-" * 80
