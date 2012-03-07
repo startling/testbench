@@ -9,7 +9,6 @@ def benchmark(fn):
     fn._benchmark_this = True
     return fn
 
-
 class Benchmark(object):
     """A class for benchmarks that will be run by testbench. Things don't
     really need to be subclasses of this, they just need to implement
@@ -38,6 +37,16 @@ class Benchmark(object):
         return time.time() - start
 
     @classmethod
+    def get_methods(cls):
+        """Return an iterator that contains the methods that we should
+        benchmark; here, the ones with the ._benchmark_this flag.
+        """
+        # get all the methods that have the _benchmark_this flag
+        for method in (getattr(cls, m) for m in dir(cls)):
+            if hasattr(method, "_benchmark_this"):
+                yield method
+
+    @classmethod
     def __benchmark__(cls):
         """Run each method that has the ._benchmark_this flag `repetitions`
         times, with each of the given arguments. Return a dictionary with 
@@ -47,11 +56,7 @@ class Benchmark(object):
         with those arguments on that trial.
         """
         results = {}
-        # get all the methods that have the _benchmark_this flag
-        methods = (a for a in (getattr(cls, a) for a in dir(cls))
-                if hasattr(a, "_benchmark_this"))
-        # for each of these methods
-        for method in methods:
+        for method in cls.get_methods():
             # add the method to the `results` dict
             results[method] = []
             # for each given argument
