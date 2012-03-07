@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+from collections import namedtuple
 
 
 def benchmark(fn):
@@ -57,7 +58,6 @@ class Benchmark(object):
         """
         results = []
         for args in cls.arguments:
-            argset_results = []
             # for each given argument
             for method in cls.get_methods():
                 # append an empty list for the results with this argument
@@ -67,6 +67,9 @@ class Benchmark(object):
                     # append the results to the list for this argument set
                     trial_results = cls._trial(method, args)
                     method_results.append(trial_results)
-                argset_results.append((method, method_results))
-            results.append((args, argset_results))
+                # append a Result to `results`.
+                results.append(Result(method, args, method_results))
         return results
+
+
+Result = namedtuple("Result", ("method", "args", "results"))
