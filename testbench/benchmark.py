@@ -50,11 +50,8 @@ class Benchmark(object):
     @classmethod
     def __benchmark__(cls):
         """Run each method that has the ._benchmark_this flag `repetitions`
-        times, with each of the given arguments. Return a dictionary with 
-        methods as keys and lists as values; each of these lists represents
-        the given argument set in that position. Each of the argument set
-        lists contain some floats for the length of time that method took
-        with those arguments on that trial.
+        times, with each of the given arguments. Return a list of Result
+        objects, one for each set of trials.
         """
         results = []
         for args in cls.arguments:
