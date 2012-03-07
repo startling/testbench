@@ -20,7 +20,7 @@ class Benchmark(object):
     #TODO: keyword arguments
 
     # the amount of times to run each method with each argument set
-    repetitions = 100
+    repetitions = 2
 
     @classmethod
     def _trial(cls, method, args):
@@ -55,17 +55,18 @@ class Benchmark(object):
         lists contain some floats for the length of time that method took
         with those arguments on that trial.
         """
-        results = {}
-        for method in cls.get_methods():
-            # add the method to the `results` dict
-            results[method] = []
+        results = []
+        for args in cls.arguments:
+            argset_results = []
             # for each given argument
-            for args in cls.arguments:
+            for method in cls.get_methods():
                 # append an empty list for the results with this argument
-                results[method].append([])
+                method_results = []
                 # for each repetition
                 for n in xrange(cls.repetitions):
                     # append the results to the list for this argument set
                     trial_results = cls._trial(method, args)
-                    results[method][-1].append(trial_results)
+                    method_results.append(trial_results)
+                argset_results.append((method, method_results))
+            results.append((args, argset_results))
         return results
