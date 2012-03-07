@@ -20,3 +20,23 @@ class BenchmarkRunner(object):
              # that don't yield anything in their .get_methods?
             if hasattr(o, "__benchmark__") and o is not Benchmark:
                 yield o
+    
+    def run(self):
+        for benchmark in self.discover():
+            yield (benchmark, benchmark.__benchmark__())
+
+    def output(self):
+        for benchmark, results in self.run():
+            print "=" * 80
+            print "Benchmarking %s..." % benchmark.__name__
+            print "=" * 80
+            for argset, arg_results in results:
+                print "For the argument set " + str(argset)
+                print "-" * 80
+                for method, method_results in arg_results:
+                    print "%s:" % method.__name__,
+                    print "avg:",
+                    print "%f" % (sum(method_results) / len(method_results)),
+                    print "max: %f" % max(method_results),
+                    print "min: %f" % min(method_results)
+                print "-" * 80
