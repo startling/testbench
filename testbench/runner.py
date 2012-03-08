@@ -27,26 +27,25 @@ class BenchmarkRunner(object):
     
     def run(self):
         for benchmark in self.discover():
-            yield (benchmark, benchmark.__benchmark__())
+            self.output(benchmark, benchmark.__benchmark__())
 
-    def output(self):
-        "Print a bunch of statistics for this set of benchmarks."
-        for benchmark, results in self.run():
-            print "=" * 80
-            print "Benchmarking %s..." % benchmark.__name__
-            print "=" * 80
-            # for each set of arguments
-            for argset in benchmark.arguments:
-                print "For the argument set " + str(argset)
-                print "-" * 80
-                # for each result that used this set of arguments.
-                for r in (r for r in results if r.args == argset):
-                    print "%s:" % r.method.__name__,
-                    # print a line with all of the stat_functions
-                    for f in self.stat_functions:
-                        print "%s: %f" % (f.__name__, f(r.results)),
-                    print
-                print "-" * 80
+    def output(self, benchmark, results):
+        "Given a benchmark and its results, print and format some statistics."
+        print "=" * 80
+        print "Benchmarking %s..." % benchmark.__name__
+        print "=" * 80
+        # for each set of arguments
+        for argset in benchmark.arguments:
+            print "For the argument set " + str(argset)
+            print "-" * 80
+            # for each result that used this set of arguments.
+            for r in (r for r in results if r.args == argset):
+                print "%s:" % r.method.__name__,
+                # print a line with all of the stat_functions
+                for f in self.stat_functions:
+                    print "%s: %f" % (f.__name__, f(r.results)),
+                print
+            print "-" * 80
         #TODO: organize things so users can set grouping
 
     def statistics(self, results):

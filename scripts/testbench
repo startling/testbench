@@ -39,7 +39,7 @@ def main():
         runner = colored(module)
 
     # and then run the benchmark and print the results
-    runner.output()
+    runner.run()
 
 
 main()
