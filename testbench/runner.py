@@ -35,6 +35,8 @@ class BenchmarkRunner(object):
         print "Benchmarking %s..." % benchmark.__name__
         print "=" * 80
         # for each set of arguments
+        #TODO: don't reference benchmark.arguments ever; it could be any
+        # iterator that yields some values, for all we know.
         for argset in benchmark.arguments:
             print "For the argument set " + str(argset)
             print "-" * 80

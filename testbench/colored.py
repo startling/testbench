@@ -13,6 +13,8 @@ class ColorBenchmarkRunner(BenchmarkRunner):
         print colored.cyan("Benchmarking `%s`..." % benchmark.__name__)
         print "=" * 80
         # for each set of arguments
+        #TODO: don't reference benchmark.arguments ever; it could be any
+        # iterator that yields some values, for all we know.
         for argset in benchmark.arguments:
             print "With the argument set " + str(argset)
             print "-" * 80
@@ -22,6 +24,7 @@ class ColorBenchmarkRunner(BenchmarkRunner):
             # a function that scales a float into an int that will fit in
             # the console width (assume 80 for now).
             # 76 because 80 - 2 (for the brackets) - 2 (for the indent)
+            #TODO: don't depend on stats having a `max` field here.
             scaled = lambda x: int(76 * (x/stats.max.max))
             # for each 
             for r in arg_results:
