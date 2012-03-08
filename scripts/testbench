@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
+import os
+
+
+def colored(module):
+    try:
+        import clint
+    except ImportError:
+        raise ImportError("You need to have clint installed for testbench-color.")
+    from testbench.colored import ColorBenchmarkRunner
+    return ColorBenchmarkRunner(module)
+
+
+def plain(module):
+    from testbench import BenchmarkRunner
+    return BenchmarkRunner(module)
+
+
+def main():
+    "Run the benchmarks in a given module."
+    # get the name that this thing was called as
+    called_as = os.path.basename(sys.argv[0])
+
+    # make sure we have an argument
+    if not len(sys.argv) == 2:
+        raise NameError("You need to give a module to run benchmarks from.")
+    
+    # add the current working directory to sys.path and import it
+    sys.path.append(os.getcwd())
+    module = __import__(sys.argv[1])
+
+    # get our benchmark runner based on how this script was called
+    if called_as == "testbench":
+        runner = plain(module)
+    elif called_as == "testbench-color":
+        runner = colored(module)
+
+    # and then run the benchmark and print the results
+    runner.output()
+
+
+main()
