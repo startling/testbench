@@ -94,3 +94,4 @@ Those bars indicate how much time it takes, scaled so that the longest time is t
 * More solid and strict API -- what do things need to implement to work as benchmarks?
 * More configurability in benchmark runners -- group results differently; have smaller, more modular methods.
 * real Sphinx API documentation, once this is less of a moving target.
+* Dump raw, unfiltered benchmark data to json or similar.
