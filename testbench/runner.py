@@ -3,11 +3,11 @@
 
 from collections import namedtuple
 from testbench import Benchmark
-from testbench.utilities import average
+from testbench.utilities import avg
 
 
 class BenchmarkRunner(object):
-    stat_functions = [min, average, max]
+    stat_functions = [min, avg, max]
 
     def __init__(self, module):
         "Given a module to run on, initialize this BenchmarkRunner."
@@ -30,20 +30,24 @@ class BenchmarkRunner(object):
             yield (benchmark, benchmark.__benchmark__())
 
     def output(self):
+        "Print a bunch of statistics for this set of benchmarks."
         for benchmark, results in self.run():
             print "=" * 80
             print "Benchmarking %s..." % benchmark.__name__
             print "=" * 80
-            argsets = benchmark.arguments
-            for argset in argsets:
+            # for each set of arguments
+            for argset in benchmark.arguments:
                 print "For the argument set " + str(argset)
                 print "-" * 80
+                # for each result that used this set of arguments.
                 for r in (r for r in results if r.args == argset):
                     print "%s:" % r.method.__name__,
+                    # print a line with all of the stat_functions
                     for f in self.stat_functions:
                         print "%s: %f" % (f.__name__, f(r.results)),
                     print
                 print "-" * 80
+        #TODO: organize things so users can set grouping
 
     def statistics(self, results):
         """Given a list of list of Results, return a named three-tuple with the

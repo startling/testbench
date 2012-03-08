@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-def average(iterable):
+def avg(iterable):
     "A generic `average` function that works on any iterable, including iterators."
     total = float(0)
     count = float(0)
