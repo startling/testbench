@@ -37,7 +37,17 @@ class BenchmarkRunner(object):
                 for r in (r for r in results if r.args == argset):
                     print "%s:" % r.method.__name__,
                     print "avg:",
-                    print "%f" % (sum(r.results) / len(r.results)),
+                    print "%f" % average(r.results)
                     print "max: %f" % max(r.results),
                     print "min: %f" % min(r.results)
                 print "-" * 80
+
+
+def average(iterable):
+    "A generic `average` function that works on any iterable, including iterators."
+    total = float(0)
+    count = float(0)
+    for n in iterable:
+        total += n
+        count += 1
+    return total/count
