@@ -6,7 +6,7 @@ from clint.textui import colored, indent, puts
 
 
 class ColorBenchmarkRunner(BenchmarkRunner):
-    def output(self, benchmark, results):
+    def handle_benchmark(self, benchmark, results):
         """Given a benchmark and its results, print nicely-formatted and
         colored statistics.
         """

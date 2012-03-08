@@ -27,9 +27,9 @@ class BenchmarkRunner(object):
     
     def run(self):
         for benchmark in self.discover():
-            self.output(benchmark, benchmark.__benchmark__())
+            self.handle_benchmark(benchmark, benchmark.__benchmark__())
 
-    def output(self, benchmark, results):
+    def handle_benchmark(self, benchmark, results):
         "Given a benchmark and its results, print and format some statistics."
         print "=" * 80
         print "Benchmarking %s..." % benchmark.__name__
