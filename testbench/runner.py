@@ -40,10 +40,9 @@ class BenchmarkRunner(object):
                 print "-" * 80
                 for r in (r for r in results if r.args == argset):
                     print "%s:" % r.method.__name__,
-                    print "avg:",
-                    print "%f" % average(r.results)
-                    print "max: %f" % max(r.results),
-                    print "min: %f" % min(r.results)
+                    for f in self.stat_functions:
+                        print "%s: %f" % (f.__name__, f(r.results)),
+                    print
                 print "-" * 80
 
     def statistics(self, results):
