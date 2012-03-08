@@ -4,8 +4,8 @@
 
 def avg(iterable):
     "A generic `average` function that works on any iterable, including iterators."
-    total = float(0)
-    count = float(0)
+    total = 0.
+    count = 0.
     for n in iterable:
         total += n
         count += 1
