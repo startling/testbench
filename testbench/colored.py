@@ -36,9 +36,9 @@ class ColorBenchmarkRunner(BenchmarkRunner):
                             these_stats = getattr(stats, f.__name__)
                             # the color is green if it's the fastest, red if
                             # it's the slowest, and cyan otherwise
-                            if time == these_stats.min:
+                            if time == getattr(these_stats, "min", 0.):
                                 color = colored.green
-                            elif time == these_stats.max:
+                            elif time == getattr(these_stats, "max", None):
                                 color = colored.red
                             else:
                                 color = colored.cyan
