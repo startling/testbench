@@ -8,5 +8,5 @@ setup(
     author_email = "tdixon51793@gmail.com",
     description = "a benchmarking library in the vein of unittest",
     packages = ["testbench"],
-    scripts = [],
+    scripts = ["scripts/testbench", "scripts/testbench-color"],
 )
