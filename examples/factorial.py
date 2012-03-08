@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from testbench import Benchmark, benchmark
+from math import factorial
 
 
 class Factorial(Benchmark):
@@ -20,3 +21,7 @@ class Factorial(Benchmark):
             return 1
         else:
             return n * self.recursive_factorial(n - 1)
+
+    @benchmark
+    def builtin_factorial(self, n):
+        return factorial(n)
