@@ -14,6 +14,12 @@ class ColorBenchmarkRunner(BenchmarkRunner):
         for benchmark, results in self.run():
             print colored.cyan("Benchmarking `%s`..." % benchmark.__name__)
             print "=" * 80
+            # get the longest of all results
+            longest = max(max(r.results) for r in results)
+            # a function that scales a float into an int that will fit in
+            # the console width (assume 80 for now).
+            # 76 because 80 - 2 (for the brackets) - 2 (for the indent)
+            scaled = lambda x: int(76 * (x/longest))
             # for each set of arguments
             for argset in benchmark.arguments:
                 print "With the argument set " + str(argset)
@@ -21,10 +27,6 @@ class ColorBenchmarkRunner(BenchmarkRunner):
                 # these are all the Result objects for this argument set
                 arg_results = [r for r in results if r.args == argset]
                 stats = self.statistics(arg_results)
-                # a function that scales a float into an int that will fit in
-                # the console width (assume 80 for now).
-                # 76 because 80 - 2 (for the brackets) - 2 (for the indent)
-                scaled = lambda x: int(76 * (x/stats.max.max))
                 # for each 
                 for r in arg_results:
                     print "%s:" % colored.cyan(r.method.__name__)
