@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections import namedtuple
 from testbench import Benchmark
+from testbench.utilities import average
 
 
 class BenchmarkRunner(object):
+    stat_functions = [min, average, max]
+
     def __init__(self, module):
         "Given a module to run on, initialize this BenchmarkRunner."
         self.module = module
@@ -42,12 +46,17 @@ class BenchmarkRunner(object):
                     print "min: %f" % min(r.results)
                 print "-" * 80
 
-
-def average(iterable):
-    "A generic `average` function that works on any iterable, including iterators."
-    total = float(0)
-    count = float(0)
-    for n in iterable:
-        total += n
-        count += 1
-    return total/count
+    def statistics(self, results):
+        """Given a list of list of Results, return a named three-tuple with the
+        an item with the name of each function in self.stat_functions. Each of
+        these items is itself a similar three-tuple, but each item is, e.g.,
+        the maximum of the maximums of the results.
+        """
+        nt = namedtuple("Statistic", [n.__name__ for n in self.stat_functions])
+        s = []
+        for f_one in self.stat_functions:
+            inside = []
+            for f_two in self.stat_functions:
+                inside.append(f_two(f_one(r.results) for r in results))
+            s.append(nt(*inside))
+        return nt(*s)
