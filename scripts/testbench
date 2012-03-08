@@ -3,20 +3,24 @@
 
 import sys
 import os
+import testbench
 
 
-def colored(module):
+def colored():
     try:
         import clint
     except ImportError:
         raise ImportError("You need to have clint installed for testbench-color.")
     from testbench.colored import ColorBenchmarkRunner
-    return ColorBenchmarkRunner(module)
+    return ColorBenchmarkRunner
 
 
-def plain(module):
-    from testbench import BenchmarkRunner
-    return BenchmarkRunner(module)
+# a mapping from the names this script can be called as to a callable that
+# returns a BenchmarkRunner constructor.
+runners = {
+    "testbench-color": colored,
+    "testbench": lambda: testbench.BenchmarkRunner,
+}
 
 
 def main():
@@ -33,10 +37,7 @@ def main():
     module = __import__(sys.argv[1])
 
     # get our benchmark runner based on how this script was called
-    if called_as == "testbench":
-        runner = plain(module)
-    elif called_as == "testbench-color":
-        runner = colored(module)
+    runner = runners[called_as]()(module)
 
     # and then run the benchmark and print the results
     runner.run()
