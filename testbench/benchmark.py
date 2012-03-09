@@ -51,10 +51,13 @@ class Benchmark(object):
     def __benchmark__(cls):
         """Run each method that has the ._benchmark_this flag `repetitions`
         times, with each of the given arguments. Return a list of Result
-        objects, one for each set of trials.
+        objects, one for each set of trials, and a list of the argument sets
+        used.
         """
         results = []
+        used_argsets = []
         for args in cls.arguments:
+            used_argsets.append(args)
             # for each given argument
             for method in cls.get_methods():
                 # append an empty list for the results with this argument
@@ -66,7 +69,7 @@ class Benchmark(object):
                     method_results.append(trial_results)
                 # append a Result to `results`.
                 results.append(Result(method, args, method_results))
-        return results
+        return results, used_argsets
 
 
 Result = namedtuple("Result", ("method", "args", "results"))
