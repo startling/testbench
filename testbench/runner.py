@@ -27,9 +27,9 @@ class BenchmarkRunner(object):
     
     def run(self):
         for benchmark in self.discover():
-            self.handle_benchmark(benchmark, benchmark.__benchmark__())
+            self.handle_benchmark(benchmark, *benchmark.__benchmark__())
 
-    def handle_benchmark(self, benchmark, results):
+    def handle_benchmark(self, benchmark, results, used_argsets):
         "Given a benchmark and its results, print and format some statistics."
         print "=" * 80
         print "Benchmarking %s..." % benchmark.__name__
@@ -37,7 +37,7 @@ class BenchmarkRunner(object):
         # for each set of arguments
         #TODO: don't reference benchmark.arguments ever; it could be any
         # iterator that yields some values, for all we know.
-        for argset in benchmark.arguments:
+        for argset in used_argsets:
             print "For the argument set " + str(argset)
             print "-" * 80
             # for each result that used this set of arguments.

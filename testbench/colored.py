@@ -6,7 +6,7 @@ from clint.textui import colored, indent, puts
 
 
 class ColorBenchmarkRunner(BenchmarkRunner):
-    def handle_benchmark(self, benchmark, results):
+    def handle_benchmark(self, benchmark, results, used_argsets):
         """Given a benchmark and its results, print nicely-formatted and
         colored statistics.
         """
@@ -15,7 +15,7 @@ class ColorBenchmarkRunner(BenchmarkRunner):
         # for each set of arguments
         #TODO: don't reference benchmark.arguments ever; it could be any
         # iterator that yields some values, for all we know.
-        for argset in benchmark.arguments:
+        for argset in used_argsets:
             print "With the argument set " + str(argset)
             print "-" * 80
             # these are all the Result objects for this argument set
